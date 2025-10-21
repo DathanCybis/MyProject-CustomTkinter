@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from tkinter import ttk, messagebox
 from banco import *
+from funcao import *
 
 janela = ctk.CTk()
 
@@ -30,11 +31,17 @@ def inserir_dados():
     datanasc = entry_datnasc_alunos.get().strip()
     turma = entry_turma_alunos.get().strip()
 
-    if not nome or not turma or not datanasc.isdigit():
+    try:
+        idade = calcular_idade(datanasc)
+    except:
+        messagebox.showwarning("Atenção", "Data inválida! Use DD/MM/AAAA")
+        return
+
+    if not nome or not idade or not turma.isdigit():
         messagebox.showwarning("Atenção", "Preencha corretamente os campos.")
         return
 
-    cadastrar_alunos(nome, datanasc, turma)
+    cadastrar_alunos(nome, idade, turma)
     carregar_dados()
     limpar_dados()
     messagebox.showinfo("Sucesso", f"{nome} foi cadastrado!")
@@ -73,6 +80,19 @@ def excluir_dados():
         carregar_dados()
         limpar_dados()
         messagebox.showinfo("Removido", f"{nome} foi excluído.")
+
+
+def atualizar_dados():
+    conn = sqlite3.connect(DB)
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, nome, datanasc, turma FROM alunos")
+    
+    for aluno in cursor.fetchall():
+        id_, nome, data_nasc, turma  = aluno
+        idade = calcular_idade(data_nasc)
+        tree.insert("", "end", values=(id_, nome, idade, turma))
+    
+    conn.close()
 
 
 def limpar_dados():
@@ -145,7 +165,7 @@ tree.column("Turma", anchor="center")
 tree.pack(expand=True, fill="both", padx=10, pady=10)
 
 
-# -------------- Barra de rolagem --------------
+# -------------- Barra de rolagem de alunos --------------
 scroll = ttk.Scrollbar(frame_tree, orient="vertical", command=tree.yview)
 tree.configure(yscrollcommand=scroll.set)
 scroll.pack(side="right", fill="y")

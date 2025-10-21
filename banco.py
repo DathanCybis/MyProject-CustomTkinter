@@ -1,5 +1,4 @@
 import sqlite3
-
 DB = "alunos.db"
 
 
@@ -47,6 +46,7 @@ def excluir_alunos(id_):
     cur = conn.cursor()
     cur.execute("DELETE FROM alunos WHERE id=?", (id_,))
     conn.commit()
+
 
 
 

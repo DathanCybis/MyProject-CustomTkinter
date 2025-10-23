@@ -55,3 +55,12 @@ def buscar_alunos(id_):
     aluno = cur.fetchone()
     conn.close()
     return aluno
+
+
+def limpa_banco():
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    cur.execute("DELETE FROM alunos")  # limpa tudo
+    conn.commit()
+    conn.close()
+

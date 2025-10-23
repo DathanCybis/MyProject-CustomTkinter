@@ -15,4 +15,3 @@ def verificar_idade(data_nasc_str):
     except ValueError:
         raise ValueError("Data inválida! Use o formato DD/MM/AAAA.")
 
-

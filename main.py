@@ -22,8 +22,17 @@ def carregar_dados():
     ### Atualiza a tela com os dados do banco ###
     for item in tree.get_children():
         tree.delete(item)
-    for pessoa in listar_alunos(): 
-        tree.insert("", "end", values=pessoa)
+    for aluno in listar_alunos():
+        id_ = aluno[0]
+        nome = aluno[1]
+        data_nasc = aluno[2]
+        turma = aluno[3]
+        idade = calcular_idade(data_nasc)
+
+        tree.insert("", "end", values=(id_, nome, idade, turma))
+
+    # for pessoa in listar_alunos(): 
+        # tree.insert("", "end", values=pessoa)
 
 
 def inserir_dados():
@@ -200,7 +209,7 @@ tabview.add('Aulas')
 aul = ctk.CTkLabel(tabview.tab('Aulas'), text=('aulas teste'), font=("arial bold", 16))
 aul.pack()
 
-
+#limpa_banco()
 
 conectar_banco()
 carregar_dados()

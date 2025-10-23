@@ -48,5 +48,10 @@ def excluir_alunos(id_):
     conn.commit()
 
 
-
-
+def buscar_alunos(id_):
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    cur.execute("SELECT nome, datanasc, turma FROM alunos WHERE id=?", (id_,))
+    aluno = cur.fetchone()
+    conn.close()
+    return aluno

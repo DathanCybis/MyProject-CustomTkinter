@@ -22,7 +22,7 @@ def carregar_dados():
     ### Atualiza a tela com os dados do banco ###
     for item in tree.get_children():
         tree.delete(item)
-    for pessoa in listar_alunos():
+    for pessoa in listar_alunos(): 
         tree.insert("", "end", values=pessoa)
 
 
@@ -32,16 +32,16 @@ def inserir_dados():
     turma = entry_turma_alunos.get().strip()
 
     try:
-        idade = calcular_idade(datanasc)
+        verificar_idade(datanasc)
     except:
         messagebox.showwarning("Atenção", "Data inválida! Use DD/MM/AAAA")
         return
 
-    if not nome or not idade or not turma.isdigit():
+    if not turma or not nome:
         messagebox.showwarning("Atenção", "Preencha corretamente os campos.")
         return
 
-    cadastrar_alunos(nome, idade, turma)
+    cadastrar_alunos(nome, datanasc, turma)
     carregar_dados()
     limpar_dados()
     messagebox.showinfo("Sucesso", f"{nome} foi cadastrado!")
@@ -58,7 +58,13 @@ def editar_dados():
     datanasc = entry_datnasc_alunos.get().strip()
     turma = entry_turma_alunos.get().strip()
 
-    if not nome or not turma or not datanasc.isdigit():
+    try:
+        verificar_idade(datanasc)
+    except:
+        messagebox.showwarning("Atenção", "Data inválida! Use DD/MM/AAAA")
+        return
+
+    if not nome or not turma:
         messagebox.showwarning("Atenção", "Preencha corretamente os campos.")
         return
 
@@ -107,12 +113,15 @@ def ao_selecionar(event):
     selecionado = tree.selection()
     if selecionado:
         valores = tree.item(selecionado[0], "values")
+        id_ = valores[0]
+        aluno = buscar_alunos(id_)
         entry_nome_alunos.delete(0, "end")
         entry_datnasc_alunos.delete(0, "end")
         entry_turma_alunos.delete(0, "end")
-        entry_nome_alunos.insert(0, valores[1])
-        entry_datnasc_alunos.insert(0, valores[2])
-        entry_turma_alunos.insert(0, valores[3])
+        if aluno:
+            entry_nome_alunos.insert(0, aluno[0])
+            entry_datnasc_alunos.insert(0, aluno[1])
+            entry_turma_alunos.insert(0, aluno[2])
 
 
 # -------------- Alunos --------------

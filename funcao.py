@@ -8,3 +8,11 @@ def calcular_idade(data_nasc_str):
         idade -= 1
     return idade
 
+def verificar_idade(data_nasc_str):
+    try:
+        data_nasc = datetime.strptime(data_nasc_str, "%d/%m/%Y").date()
+        return data_nasc
+    except ValueError:
+        raise ValueError("Data inválida! Use o formato DD/MM/AAAA.")
+
+

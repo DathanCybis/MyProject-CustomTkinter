@@ -1,10 +1,9 @@
 import sqlite3
-DB = "alunos.db"
-
-
-
+DB = "sistema_escolar.db"
 
 # -------------- FUNÇÕES DO BANCO DE DADOS -------------- 
+
+# -------------- ALUNOS -------------- 
 def conectar_banco():
     ### Cria a tabela se não existir ###
     conn = sqlite3.connect(DB) # ou #with sqlite3.connect(DB) as conn:
@@ -63,4 +62,42 @@ def limpa_banco():
     cur.execute("DELETE FROM alunos")  # limpa tudo
     conn.commit()
     conn.close()
+
+
+# -------------- TURMAS --------------
+def conectar_banco_turmas():
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS turmas (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL
+            descricao TEXT
+        )
+    """)
+    conn.commit()
+
+def cadastrar_turmas(nome, descricao):
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    cur.execute("INSERT INTO turmas (nome, descricao) VALUES (?, ?)", (nome, descricao))
+    conn.commit()
+
+def listar_turmas():
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    cur.execute("SELECT id, nome, descricao FROM turmas ORDER BY id")
+    return cur.fetchall()
+
+def atualizar_turma(id_, nome, descricao):
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    cur.execute("UPDATE turmas SET nome=?, descricao=? WHERE id=?", (nome, descricao, id_))
+    conn.commit()
+
+def excluir_turma_db(id_):
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    cur.execute("DELETE FROM turmas WHERE id=?", (id_,))
+    conn.commit()
 

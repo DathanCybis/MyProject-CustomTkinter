@@ -2,7 +2,7 @@ import customtkinter as ctk
 from tkinter import ttk, messagebox
 from banco import *
 from funcao import *
-
+from telas import turmas
 janela = ctk.CTk()
 
 janela._set_appearance_mode("dark")
@@ -198,11 +198,9 @@ prof = ctk.CTkLabel(tabview.tab("Professores"), text=('professores teste'), font
 prof.pack()
 
 
-# -------------- Turmas --------------
+# -------------- Turmas -------------- ******************************************************************===============================
 tabview.add('Turmas')
-tur = ctk.CTkLabel(tabview.tab('Turmas'), text=('turmas teste'), font=("arial bold", 16))
-tur.pack()
-
+turmas.criar_tela_turmas(tabview.tab('Turmas'))
 
 # -------------- Aulas --------------
 tabview.add('Aulas')
@@ -212,6 +210,7 @@ aul.pack()
 #limpa_banco()
 
 conectar_banco()
+conectar_banco_turmas()
 carregar_dados()
 
 janela.mainloop()

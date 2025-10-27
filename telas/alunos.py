@@ -121,7 +121,7 @@ def criar_tela_alunos(frame):
                 entry_turma_alunos.insert(0, aluno[2])
 
 
-    # -------------- Alunos --------------
+    # -------------- Botões --------------
 
     entry_nome_alunos = ctk.CTkEntry(frame, placeholder_text='Nome...', width=250)
     entry_nome_alunos.pack()
@@ -170,12 +170,12 @@ def criar_tela_alunos(frame):
     tree.pack(expand=True, fill="both", padx=10, pady=10)
 
 
-    # -------------- Barra de rolagem de alunos --------------
+    # -------------- Barra de rolagem --------------
     scroll = ttk.Scrollbar(frame_tree, orient="vertical", command=tree.yview)
     tree.configure(yscrollcommand=scroll.set)
     scroll.pack(side="right", fill="y")
 
     tree.bind("<<TreeviewSelect>>", ao_selecionar)
 
+    # -------------- Inicialização --------------
     carregar_dados_alunos()
-

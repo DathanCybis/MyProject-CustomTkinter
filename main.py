@@ -3,6 +3,10 @@ from tkinter import ttk, messagebox
 from banco import *
 from funcao import *
 from telas import turmas, alunos
+
+conectar_banco_alunos()
+conectar_banco_turmas()
+
 janela = ctk.CTk()
 
 janela._set_appearance_mode("dark")
@@ -35,11 +39,6 @@ turmas.criar_tela_turmas(tabview.tab('Turmas'))
 tabview.add('Aulas')
 aul = ctk.CTkLabel(tabview.tab('Aulas'), text=('aulas teste'), font=("arial bold", 16))
 aul.pack()
-
-#limpa_banco()
-
-conectar_banco_alunos()
-conectar_banco_turmas()
 
 
 janela.mainloop()

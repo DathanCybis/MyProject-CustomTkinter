@@ -64,40 +64,58 @@ def limpa_banco():
     conn.close()
 
 
+
+
 # -------------- TURMAS --------------
 def conectar_banco_turmas():
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
     cur.execute("""
         CREATE TABLE IF NOT EXISTS turmas (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT NOT NULL,
-            descricao TEXT
+            id INTEGER PRIMARY KEY AUTOINCREMENT,    
+            turma TEXT NOT NULL,
+            professor TEXT,                
+            turno TEXT NOT NULL,
+            capacidade INTEGER,
+            sala TEXT
         )
     """)
     conn.commit()
 
-def cadastrar_turmas(nome, descricao):
+
+def cadastrar_turmas(turma, professor, turno, capacidade, sala):
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
-    cur.execute("INSERT INTO turmas (nome, descricao) VALUES (?, ?)", (nome, descricao))
+    cur.execute("INSERT INTO turmas (turma, professor, turno, capacidade, sala) VALUES (?, ?, ?, ?, ?)", (turma, professor, turno, capacidade, sala))
     conn.commit()
+
 
 def listar_turmas():
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
-    cur.execute("SELECT id, nome, descricao FROM turmas ORDER BY id")
+    cur.execute("SELECT id, turma, professor, turno, capacidade, sala FROM turmas ORDER BY id")
     return cur.fetchall()
 
-def atualizar_turma(id_, nome, descricao):
+
+def atualizar_turmas(id_, turma, professor, turno, capacidade, sala):
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
-    cur.execute("UPDATE turmas SET nome=?, descricao=? WHERE id=?", (nome, descricao, id_))
+    cur.execute("UPDATE turmas SET turma=?, professor=?, turno=?, capacidade=?, sala=? WHERE id=?", (turma, professor, turno, capacidade, sala, id_))
     conn.commit()
 
-def excluir_turma_db(id_):
+
+def excluir_turmas(id_):
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
-    cur.execute("DELETE FROM turmas WHERE id=?", (id_,))
+    cur.execute("DELETE FROM turmas WHERE id=?", (id_))
     conn.commit()
+
+
+def buscar_turmas(id_):
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    cur.execute("SELECT turma, professor, turno, capacidade, sala FROM turmas WHERE id=?", (id_))
+    turma = cur.fetchone()
+    conn.close()
+    return turma
 

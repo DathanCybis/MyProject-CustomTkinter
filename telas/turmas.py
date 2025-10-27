@@ -9,43 +9,56 @@ def criar_tela_turmas(frame):
         ### Atualiza a tela com os dados do banco ###
         for item in tree.get_children():
             tree.delete(item)
-        for aluno in listar_alunos():
-            id_ = aluno[0]
-            nome = aluno[1]
+        for t in listar_turmas():
+            id_ = t[0]
+            turma = t[1]
+            professor = t[2]
+            turno = t[3]
+            capacidade = t[4]
+            sala = t[5]
 
-            tree.insert("", "end", values=(id_, nome))
+            tree.insert("", "end", values=(id_, turma, professor, turno, capacidade, sala))
 
 
     def inserir_dados_turmas():
-        nome = entry_nome_alunos.get().strip()
+        turma = entry_turma_turmas.get().strip()
+        professor = entry_professor_turmas.get().strip()
+        turno = entry_turno_turmas.get().strip()
+        capacidade = entry_capacidade_turmas.get().strip()
+        sala = entry_sala_turmas.get().strip()
 
-        if not nome:
+        if not turma or not turno:
             messagebox.showwarning("Atenção", "Preencha corretamente os campos.")
             return
 
-        cadastrar_alunos(nome)
+        cadastrar_turmas(turma, professor, turno, capacidade, sala)
         carregar_dados_turmas()
         limpar_dados_turmas()
-        messagebox.showinfo("Sucesso", f"{nome} foi cadastrado!")
+        messagebox.showinfo("Sucesso", f"{turma} foi cadastrado!")
 
 
     def editar_dados_turmas():
         selecionado = tree.selection()
         if not selecionado:
-            messagebox.showwarning("Aviso", "Selecione uma pessoa para editar.")
+            messagebox.showwarning("Aviso", "Selecione uma turma para editar.")
             return
 
         id_ = tree.item(selecionado[0], "values")[0]
-        nome = entry_nome_alunos.get().strip()
+        turma = entry_turma_turmas.get().strip()
+        professor = entry_professor_turmas.get().strip()
+        turno = entry_turno_turmas.get().strip()
+        capacidade = entry_capacidade_turmas.get().strip()
+        sala = entry_sala_turmas.get().strip()
 
-        if not nome:
+
+        if not turma or not turno:
             messagebox.showwarning("Atenção", "Preencha corretamente os campos.")
             return
 
-        atualizar_alunos(id_, nome)
+        atualizar_turmas(id_, turma, professor, turno, capacidade, sala)
         carregar_dados_turmas()
         limpar_dados_turmas()
-        messagebox.showinfo("Sucesso", f"Dados de {nome} foram atualizados!")
+        messagebox.showinfo("Sucesso", f"Dados de {turma} foram atualizados!")
 
 
     def excluir_dados_turmas():
@@ -54,28 +67,31 @@ def criar_tela_turmas(frame):
             messagebox.showwarning("Aviso", "Selecione uma pessoa para excluir.")
             return
 
-        id_, nome = tree.item(selecionado[0], "values")[0:2]
-        if messagebox.askyesno("Confirmação", f"Excluir {nome}?"):
-            excluir_alunos(id_)
+        id_, turma = tree.item(selecionado[0], "values")[0:2]
+        if messagebox.askyesno("Confirmação", f"Excluir {turma}?"):
+            excluir_turmas(id_)
             carregar_dados_turmas()
             limpar_dados_turmas()
-            messagebox.showinfo("Removido", f"{nome} foi excluído.")
+            messagebox.showinfo("Removido", f"{turma} foi excluído.")
 
 
     def atualizar_dados_turmas():
         conn = sqlite3.connect(DB)
         cursor = conn.cursor()
-        cursor.execute("SELECT id, nome, datanasc, turma FROM alunos")
+        cursor.execute("SELECT id, turma, professor, turno, capacidade, sala FROM turmas")
         
         for aluno in cursor.fetchall():
-            id_, nome = aluno
-            tree.insert("", "end", values=(id_, nome))
-        
+            id_, turma, professor, turno, capacidade, sala = aluno
+            tree.insert("", "end", values=(id_, turma, professor, turno, capacidade, sala))
         conn.close()
 
 
     def limpar_dados_turmas():
-        entry_nome_alunos.delete(0, "end")
+        entry_turma_turmas.delete(0, "end")
+        entry_professor_turmas.delete(0, "end")
+        entry_turno_turmas.delete(0, "end")
+        entry_capacidade_turmas.delete(0, "end")
+        entry_sala_turmas.delete(0, "end")
         tree.selection_remove(tree.selection())
 
 
@@ -85,35 +101,49 @@ def criar_tela_turmas(frame):
         if selecionado:
             valores = tree.item(selecionado[0], "values")
             id_ = valores[0]
-            aluno = buscar_alunos(id_)
-            entry_nome_alunos.delete(0, "end")
-            if aluno:
-                entry_nome_alunos.insert(0, aluno[0])
+            turma = buscar_turmas(id_)
+            entry_turma_turmas.delete(0, "end")
+            entry_professor_turmas.delete(0, "end")
+            entry_turno_turmas.delete(0, "end")
+            entry_capacidade_turmas.delete(0, "end")
+            entry_sala_turmas.delete(0, "end")
+            if turma:
+                entry_turma_turmas.insert(0, turma[0])
+                entry_professor_turmas.insert(0, turma[1])
+                entry_turno_turmas.insert(0, turma[2])
+                entry_capacidade_turmas.insert(0, turma[3])
+                entry_sala_turmas.insert(0, turma[4])
 
 
-    entry_nome_alunos = ctk.CTkEntry(frame, placeholder_text='Nome...', width=250)
-    entry_nome_alunos.pack()
+    entry_turma_turmas = ctk.CTkEntry(frame, placeholder_text='Turma...', width=250)
+    entry_turma_turmas.pack()
 
-    entry_datnasc_alunos = ctk.CTkEntry(frame, placeholder_text='Data de Nascimento (DD/MM/AAAA)...', width=250)
-    entry_datnasc_alunos.pack(pady=15)
+    entry_professor_turmas = ctk.CTkEntry(frame, placeholder_text='Professor...', width=250)
+    entry_professor_turmas.pack(pady=15)
 
-    entry_turma_alunos = ctk.CTkEntry(frame, placeholder_text='Turma...', width=250)
-    entry_turma_alunos.pack(pady=(0, 15))
+    entry_turno_turmas = ctk.CTkEntry(frame, placeholder_text='Turno...', width=250)
+    entry_turno_turmas.pack(pady=(0, 15))
 
-    ctk.CTkButton(frame, text='CADASTRAR ALUNO', fg_color='black', text_color='purple', width=250, 
+    entry_capacidade_turmas = ctk.CTkEntry(frame, placeholder_text='Capacidade...', width=250)
+    entry_capacidade_turmas.pack(pady=(0, 15))
+
+    entry_sala_turmas = ctk.CTkEntry(frame, placeholder_text='Sala...', width=250)
+    entry_sala_turmas.pack(pady=(0, 15))
+
+    ctk.CTkButton(frame, text='CADASTRAR TURMA', fg_color='black', text_color='purple', width=250, 
                 font=('arial bold', 14), hover_color='grey', command=inserir_dados_turmas).pack(pady=(0, 5))
 
-    ctk.CTkButton(frame, text='EDITAR ALUNO', fg_color='black', text_color='purple', width=250,
+    ctk.CTkButton(frame, text='EDITAR TURMA', fg_color='black', text_color='purple', width=250,
                             font=('arial bold', 14), hover_color='grey', command=editar_dados_turmas).pack(pady=(0, 5))
 
-    ctk.CTkButton(frame, text='EXCLUIR ALUNO', fg_color='black', text_color='purple', width=250,
+    ctk.CTkButton(frame, text='EXCLUIR TURMA', fg_color='black', text_color='purple', width=250,
                             font=('arial bold', 14), hover_color='grey', command=excluir_dados_turmas).pack(pady=(0, 5))
 
     ctk.CTkButton(frame, text='LIMPAR DADOS', fg_color='black', text_color='purple', width=250,
                             font=('arial bold', 14), hover_color='grey', command=limpar_dados_turmas).pack()
 
 
-    # -------------- Treeview de alunos --------------
+    # -------------- Treeview de turmas --------------
     style = ttk.Style(frame)
     style.theme_use("clam")
     style.configure("Treeview",
@@ -126,15 +156,19 @@ def criar_tela_turmas(frame):
     frame_tree = ctk.CTkFrame(frame, corner_radius=10)
     frame_tree.pack(side="bottom", expand=True, fill="both", padx=10, pady=10)
 
-    tree = ttk.Treeview(frame_tree, columns=("ID", "Nome", "Idade", "Turma"), show="headings")
+    tree = ttk.Treeview(frame_tree, columns=("ID", "Turma", "Professor", "Turno", "Capacidade", "Sala"), show="headings")
     tree.heading("ID", text="ID")
-    tree.heading("Nome", text="Nome")
-    tree.heading("Idade", text="Idade")
     tree.heading("Turma", text="Turma")
+    tree.heading("Professor", text="Professor")
+    tree.heading("Turno", text="Turno")
+    tree.heading("Capacidade", text="Capacidade")
+    tree.heading("Sala", text="Sala")
     tree.column("ID", width=10, anchor="center")
-    tree.column("Nome", width=200)
-    tree.column("Idade", width=10 , anchor="center")
-    tree.column("Turma", anchor="center")
+    tree.column("Turma", width=50)
+    tree.column("Professor", width=200, anchor="center")
+    tree.column("Turno", anchor="center")
+    tree.column("Capacidade", width=15)
+    tree.column("Sala", width=100 , anchor="center")
     tree.pack(expand=True, fill="both", padx=10, pady=10)
 
 
@@ -146,6 +180,5 @@ def criar_tela_turmas(frame):
     tree.bind("<<TreeviewSelect>>", ao_selecionar_turmas)
 
     # -------------- Inicialização --------------
-    conectar_banco_turmas()
     carregar_dados_turmas()
 

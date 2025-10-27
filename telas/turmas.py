@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from tkinter import ttk, messagebox
 from banco import *
-
+print('teste')
 
 # -------------- Turmas --------------
 def criar_tela(frame):

@@ -4,7 +4,7 @@ DB = "sistema_escolar.db"
 # -------------- FUNÇÕES DO BANCO DE DADOS -------------- 
 
 # -------------- ALUNOS -------------- 
-def conectar_banco():
+def conectar_banco_alunos():
     ### Cria a tabela se não existir ###
     conn = sqlite3.connect(DB) # ou #with sqlite3.connect(DB) as conn:
     cur = conn.cursor()
@@ -71,7 +71,7 @@ def conectar_banco_turmas():
     cur.execute("""
         CREATE TABLE IF NOT EXISTS turmas (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT NOT NULL
+            nome TEXT NOT NULL,
             descricao TEXT
         )
     """)

@@ -1,10 +1,9 @@
 import customtkinter as ctk
 from tkinter import ttk, messagebox
 from banco import *
-print('teste')
 
 # -------------- Turmas --------------
-def criar_tela(frame):
+def criar_tela_turmas(frame):
     # -------------- Funções da interface --------------
     def carregar_dados_turmas():
         ### Atualiza a tela com os dados do banco ###

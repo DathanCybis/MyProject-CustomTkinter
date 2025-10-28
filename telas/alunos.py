@@ -19,9 +19,6 @@ def criar_tela_alunos(frame):
 
             tree.insert("", "end", values=(id_, nome, idade, turma))
 
-        # for pessoa in listar_alunos(): 
-            # tree.insert("", "end", values=pessoa)
-
 
     def inserir_dados():
         nome = entry_nome_alunos.get().strip()
@@ -121,28 +118,28 @@ def criar_tela_alunos(frame):
                 entry_turma_alunos.insert(0, aluno[2])
 
 
-    # -------------- Botões --------------
-
-    entry_nome_alunos = ctk.CTkEntry(frame, placeholder_text='Nome...', width=250)
+    # ---------------- Campos de entrada ----------------
+    entry_nome_alunos = ctk.CTkEntry(frame, placeholder_text='*Nome completo...', width=250)
     entry_nome_alunos.pack()
 
-    entry_datnasc_alunos = ctk.CTkEntry(frame, placeholder_text='Data de Nascimento (DD/MM/AAAA)...', width=250)
+    entry_datnasc_alunos = ctk.CTkEntry(frame, placeholder_text='*Data de Nascimento (DD/MM/AAAA)...', width=250)
     entry_datnasc_alunos.pack(pady=15)
 
-    entry_turma_alunos = ctk.CTkEntry(frame, placeholder_text='Turma...', width=250)
+    entry_turma_alunos = ctk.CTkEntry(frame, placeholder_text='*Turma...', width=250)
     entry_turma_alunos.pack(pady=(0, 15))
 
-    ctk.CTkButton(frame, text='CADASTRAR ALUNO', fg_color='black', text_color='purple', width=250, 
-                font=('arial bold', 14), hover_color='grey', command=inserir_dados).pack(pady=(0, 5))
+    # -------------- Botões --------------
+    ctk.CTkButton(frame, text='CADASTRAR ALUNOS', fg_color='black', text_color='purple', width=250, 
+                  font=('arial bold', 14), hover_color='grey', command=inserir_dados).pack(pady=(0, 5))
 
-    ctk.CTkButton(frame, text='EDITAR ALUNO', fg_color='black', text_color='purple', width=250,
-                            font=('arial bold', 14), hover_color='grey', command=editar_dados).pack(pady=(0, 5))
+    ctk.CTkButton(frame, text='EDITAR ALUNOS', fg_color='black', text_color='purple', width=250,
+                  font=('arial bold', 14), hover_color='grey', command=editar_dados).pack(pady=(0, 5))
+    
+    ctk.CTkButton(frame, text='EXCLUIR ALUNOS', fg_color='black', text_color='purple', width=250,
+                  font=('arial bold', 14), hover_color='grey', command=excluir_dados).pack(pady=(0, 5))
 
-    ctk.CTkButton(frame, text='EXCLUIR ALUNO', fg_color='black', text_color='purple', width=250,
-                            font=('arial bold', 14), hover_color='grey', command=excluir_dados).pack(pady=(0, 5))
-
-    ctk.CTkButton(frame, text='LIMPAR DADOS', fg_color='black', text_color='purple', width=250,
-                            font=('arial bold', 14), hover_color='grey', command=limpar_dados).pack()
+    ctk.CTkButton(frame, text='LIMPAR ALUNOS', fg_color='black', text_color='purple', width=250,
+                  font=('arial bold', 14), hover_color='grey', command=limpar_dados).pack()
 
 
     # -------------- Treeview de alunos --------------

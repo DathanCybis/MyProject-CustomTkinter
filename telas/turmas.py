@@ -115,6 +115,7 @@ def criar_tela_turmas(frame):
                 entry_sala_turmas.insert(0, turma[4])
 
 
+    # ---------------- Campos de entrada ----------------
     entry_turma_turmas = ctk.CTkEntry(frame, placeholder_text='Turma...', width=250)
     entry_turma_turmas.pack()
 
@@ -130,17 +131,18 @@ def criar_tela_turmas(frame):
     entry_sala_turmas = ctk.CTkEntry(frame, placeholder_text='Sala...', width=250)
     entry_sala_turmas.pack(pady=(0, 15))
 
+    # -------------- Botões --------------
     ctk.CTkButton(frame, text='CADASTRAR TURMA', fg_color='black', text_color='purple', width=250, 
-                font=('arial bold', 14), hover_color='grey', command=inserir_dados_turmas).pack(pady=(0, 5))
+                  font=('arial bold', 14), hover_color='grey', command=inserir_dados_turmas).pack(pady=(0, 5))
 
     ctk.CTkButton(frame, text='EDITAR TURMA', fg_color='black', text_color='purple', width=250,
-                            font=('arial bold', 14), hover_color='grey', command=editar_dados_turmas).pack(pady=(0, 5))
+                  font=('arial bold', 14), hover_color='grey', command=editar_dados_turmas).pack(pady=(0, 5))
 
     ctk.CTkButton(frame, text='EXCLUIR TURMA', fg_color='black', text_color='purple', width=250,
-                            font=('arial bold', 14), hover_color='grey', command=excluir_dados_turmas).pack(pady=(0, 5))
+                  font=('arial bold', 14), hover_color='grey', command=excluir_dados_turmas).pack(pady=(0, 5))
 
     ctk.CTkButton(frame, text='LIMPAR DADOS', fg_color='black', text_color='purple', width=250,
-                            font=('arial bold', 14), hover_color='grey', command=limpar_dados_turmas).pack()
+                  font=('arial bold', 14), hover_color='grey', command=limpar_dados_turmas).pack()
 
 
     # -------------- Treeview de turmas --------------
@@ -181,4 +183,3 @@ def criar_tela_turmas(frame):
 
     # -------------- Inicialização --------------
     carregar_dados_turmas()
-

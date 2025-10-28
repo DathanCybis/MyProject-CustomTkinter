@@ -3,10 +3,10 @@ DB = "sistema_escolar.db"
 
 # -------------- FUNÇÕES DO BANCO DE DADOS -------------- 
 
-# -------------- ALUNOS -------------- 
+# -------------- -------------- -------------- ALUNOS -------------- -------------- -------------- 
 def conectar_banco_alunos():
     ### Cria a tabela se não existir ###
-    conn = sqlite3.connect(DB) # ou #with sqlite3.connect(DB) as conn:
+    conn = sqlite3.connect(DB)
     cur = conn.cursor()
     cur.execute("""
         CREATE TABLE IF NOT EXISTS alunos (
@@ -66,7 +66,7 @@ def limpa_banco():
 
 
 
-# -------------- TURMAS --------------
+# -------------- -------------- -------------- TURMAS -------------- -------------- --------------
 def conectar_banco_turmas():
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
@@ -74,7 +74,7 @@ def conectar_banco_turmas():
         CREATE TABLE IF NOT EXISTS turmas (
             id INTEGER PRIMARY KEY AUTOINCREMENT,    
             turma TEXT NOT NULL,
-            professor TEXT,                
+            professor TEXT NOT NULL,                
             turno TEXT NOT NULL,
             capacidade INTEGER,
             sala TEXT
@@ -83,7 +83,7 @@ def conectar_banco_turmas():
     conn.commit()
 
 
-def cadastrar_turmas(turma, professor, turno, capacidade, sala):
+def cadastrar_turmas(turma, professor, turno, capacidade=None, sala=None):
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
     cur.execute("INSERT INTO turmas (turma, professor, turno, capacidade, sala) VALUES (?, ?, ?, ?, ?)", (turma, professor, turno, capacidade, sala))
@@ -118,4 +118,66 @@ def buscar_turmas(id_):
     turma = cur.fetchone()
     conn.close()
     return turma
+
+
+
+
+# -------------- -------------- -------------- PROFESSORES -------------- -------------- --------------
+def conectar_banco_professores():
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS professores (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL,
+            data_nasc TEXT NOT NULL,
+            especialidade TEXT NOT NULL,
+            telefone TEXT,
+            email TEXT
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+
+def cadastrar_professor(nome, data_nasc, especialidade, telefone=None, email=None):
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    cur.execute("INSERT INTO professores (nome, data_nasc, especialidade, telefone, email) VALUES (?, ?, ?, ?, ?)", (nome, data_nasc, especialidade, telefone, email))
+    conn.commit()
+    conn.close()
+
+
+def listar_professores():
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    cur.execute("SELECT id, nome, data_nasc, especialidade, telefone, email FROM professores ORDER BY id")
+    dados = cur.fetchall()
+    conn.close()
+    return dados
+
+
+def buscar_professor(id_):
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    cur.execute("SELECT nome, data_nasc, especialidade, telefone, email FROM professores WHERE id = ?", (id_,))
+    dados = cur.fetchone()
+    conn.close()
+    return dados
+
+
+def atualizar_professor(id_, nome, data_nasc, especialidade, telefone, email):
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    cur.execute("UPDATE professores SET nome = ?, data_nasc = ?, especialidade = ?, telefone = ?, email = ? WHERE id = ?", (nome, data_nasc, especialidade, telefone, email, id_))
+    conn.commit()
+    conn.close()
+
+
+def excluir_professor(id_):
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    cur.execute("DELETE FROM professores WHERE id = ?", (id_,))
+    conn.commit()
+    conn.close()
 

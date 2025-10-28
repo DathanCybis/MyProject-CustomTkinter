@@ -2,10 +2,11 @@ import customtkinter as ctk
 from tkinter import ttk, messagebox
 from banco import *
 from funcao import *
-from telas import turmas, alunos
+from telas import turmas, alunos, professores
 
 conectar_banco_alunos()
 conectar_banco_turmas()
+conectar_banco_professores()
 
 janela = ctk.CTk()
 
@@ -25,15 +26,16 @@ tabview.pack()
 tabview.add('Alunos')
 alunos.criar_tela_alunos(tabview.tab('Alunos'))
 
+
 # -------------- Professores --------------
 tabview.add('Professores')
-prof = ctk.CTkLabel(tabview.tab("Professores"), text=('professores teste'), font=("arial bold", 16))
-prof.pack()
+professores.criar_tela_professores(tabview.tab('Professores'))
 
 
-# -------------- Turmas -------------- ******************************************************************===============================
+# -------------- Turmas --------------
 tabview.add('Turmas')
 turmas.criar_tela_turmas(tabview.tab('Turmas'))
+
 
 # -------------- Aulas --------------
 tabview.add('Aulas')

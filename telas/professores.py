@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from tkinter import ttk, messagebox
-from banco import listar_professores, cadastrar_professor, atualizar_professor, excluir_professor
+from banco import listar_professores, cadastrar_professor, atualizar_professor, excluir_professor, buscar_professor
+from funcao import calcular_idade, verificar_idade
 
 def criar_tela_professores(frame):
     # ---------------- Funções internas ----------------
@@ -15,8 +16,10 @@ def criar_tela_professores(frame):
             especialidade = professor[3]
             telefone = professor[4]
             email = professor[5]
+            idade = calcular_idade(data_nasc)
 
-            tree.insert("", "end", values=(id_, nome, data_nasc, especialidade, telefone, email))
+            tree.insert("", "end", values=(id_, nome, idade, especialidade, telefone, email))
+
 
     def inserir_professor():
         nome = entry_nome.get().strip()
@@ -25,14 +28,21 @@ def criar_tela_professores(frame):
         telefone = entry_telefone.get().strip()
         email = entry_email.get().strip()
 
+        try:
+            verificar_idade(data_nasc)
+        except:
+            messagebox.showwarning("Atenção", "Data inválida! Use DD/MM/AAAA")
+            return
+
         if not nome or not data_nasc or not especialidade:
-            messagebox.showwarning("Atenção", "Preencha os campos obrigatórios (Nome, Data e Especialidade).")
+            messagebox.showwarning("Atenção", "Preencha corretamente os campos.")
             return
 
         cadastrar_professor(nome, data_nasc, especialidade, telefone, email)
         carregar_dados_professores()
         limpar_campos()
         messagebox.showinfo("Sucesso", f"Professor {nome} foi cadastrado!")
+
 
     def editar_professor():
         selecionado = tree.selection()
@@ -47,8 +57,14 @@ def criar_tela_professores(frame):
         telefone = entry_telefone.get().strip()
         email = entry_email.get().strip()
 
+        try:
+            verificar_idade(data_nasc)
+        except:
+            messagebox.showwarning("Atenção", "Data inválida! Use DD/MM/AAAA")
+            return
+
         if not nome or not data_nasc or not especialidade:
-            messagebox.showwarning("Atenção", "Preencha os campos obrigatórios.")
+            messagebox.showwarning("Atenção", "Preencha corretamente os campos.")
             return
 
         atualizar_professor(id_, nome, data_nasc, especialidade, telefone, email)
@@ -56,7 +72,8 @@ def criar_tela_professores(frame):
         limpar_campos()
         messagebox.showinfo("Sucesso", f"Dados de {nome} foram atualizados!")
 
-    def excluir_professor_ui():
+
+    def excluir_dados_professor():
         selecionado = tree.selection()
         if not selecionado:
             messagebox.showwarning("Aviso", "Selecione um professor para excluir.")
@@ -77,50 +94,53 @@ def criar_tela_professores(frame):
         entry_email.delete(0, "end")
         tree.selection_remove(tree.selection())
 
+
     def ao_selecionar_professor(event):
         selecionado = tree.selection()
         if selecionado:
             valores = tree.item(selecionado[0], "values")
+            id_ = valores[0]
+            professor = buscar_professor(id_)
             entry_nome.delete(0, "end")
             entry_data_nasc.delete(0, "end")
             entry_especialidade.delete(0, "end")
             entry_telefone.delete(0, "end")
             entry_email.delete(0, "end")
-
-            entry_nome.insert(0, valores[1])
-            entry_data_nasc.insert(0, valores[2])
-            entry_especialidade.insert(0, valores[3])
-            entry_telefone.insert(0, valores[4])
-            entry_email.insert(0, valores[5])
+            if professor:
+                entry_nome.insert(0, professor[0])
+                entry_data_nasc.insert(0, professor[1])
+                entry_especialidade.insert(0, professor[2])
+                entry_telefone.insert(0, professor[3])
+                entry_email.insert(0, professor[4])
 
 
     # ---------------- Campos de entrada ----------------
-    entry_nome = ctk.CTkEntry(frame, placeholder_text="*Nome completo...", width=300)
-    entry_nome.pack(pady=(10, 5))
+    entry_nome = ctk.CTkEntry(frame, placeholder_text="* Nome completo...", width=250)
+    entry_nome.pack()
 
-    entry_data_nasc = ctk.CTkEntry(frame, placeholder_text="*Data de Nascimento (DD/MM/AAAA)...", width=300)
-    entry_data_nasc.pack(pady=5)
+    entry_data_nasc = ctk.CTkEntry(frame, placeholder_text="* Data de Nascimento (DD/MM/AAAA)...", width=250)
+    entry_data_nasc.pack(pady=15)
 
-    entry_especialidade = ctk.CTkEntry(frame, placeholder_text="*Especialidade...", width=300)
-    entry_especialidade.pack(pady=5)
+    entry_especialidade = ctk.CTkEntry(frame, placeholder_text="* Especialidade...", width=250)
+    entry_especialidade.pack(pady=(0, 15))
 
-    entry_telefone = ctk.CTkEntry(frame, placeholder_text="Telefone...", width=300)
-    entry_telefone.pack(pady=5)
+    entry_telefone = ctk.CTkEntry(frame, placeholder_text="Telefone...", width=250)
+    entry_telefone.pack(pady=(0, 15))
 
-    entry_email = ctk.CTkEntry(frame, placeholder_text="E-mail...", width=300)
-    entry_email.pack(pady=(5, 15))
+    entry_email = ctk.CTkEntry(frame, placeholder_text="E-mail...", width=250)
+    entry_email.pack(pady=(0, 15))
 
     # ---------------- Botões ----------------
-    ctk.CTkButton(frame, text="Cadastrar", fg_color="black", text_color="purple", width=120,
+    ctk.CTkButton(frame, text="CADASTRAR PROFESSOR", fg_color="black", text_color="purple", width=250,
                   font=('arial bold', 14), hover_color="grey", command=inserir_professor).pack(pady=(0, 5))
 
-    ctk.CTkButton(frame, text="Editar", fg_color="black", text_color="purple", width=120,
+    ctk.CTkButton(frame, text="EDITAR PROFESSOR", fg_color="black", text_color="purple", width=250,
                   font=('arial bold', 14), hover_color="grey", command=editar_professor).pack(pady=(0, 5))
 
-    ctk.CTkButton(frame, text="Excluir", fg_color="black", text_color="purple", width=120,
-                  font=('arial bold', 14), hover_color="grey", command=excluir_professor_ui).pack(pady=(0, 5))
+    ctk.CTkButton(frame, text="EXCLUIR PROFESSOR", fg_color="black", text_color="purple", width=250,
+                  font=('arial bold', 14), hover_color="grey", command=excluir_dados_professor).pack(pady=(0, 5))
 
-    ctk.CTkButton(frame, text="Limpar", fg_color="black", text_color="purple", width=120,
+    ctk.CTkButton(frame, text="LIMPAR CAMPOS", fg_color="black", text_color="purple", width=250,
                   font=('arial bold', 14), hover_color="grey", command=limpar_campos).pack()
 
     # ---------------- Treeview ----------------
@@ -137,16 +157,18 @@ def criar_tela_professores(frame):
     frame_tree.pack(expand=True, fill="both", padx=10, pady=10)
 
     tree = ttk.Treeview(frame_tree, columns=("ID", "Nome", "Nascimento", "Especialidade", "Telefone", "E-mail"), show="headings")
-    for col in ("ID", "Nome", "Nascimento", "Especialidade", "Telefone", "E-mail"):
-        tree.heading(col, text=col)
-        tree.column(col, anchor="center")
-
-    tree.column("ID", width=40)
-    tree.column("Nome", width=150)
-    tree.column("Nascimento", width=120)
-    tree.column("Especialidade", width=150)
-    tree.column("Telefone", width=120)
-    tree.column("E-mail", width=180)
+    tree.heading("ID", text="ID")
+    tree.heading("Nome", text="Nome")
+    tree.heading("Nascimento", text="Nascimento")
+    tree.heading("Especialidade", text="Especialidade")
+    tree.heading("Telefone", text="Telefone")
+    tree.heading("E-mail", text="E-mail")
+    tree.column("ID", width=40, anchor="center")
+    tree.column("Nome", width=150, anchor="center")
+    tree.column("Nascimento", width=120, anchor="center")
+    tree.column("Especialidade", width=150, anchor="center")
+    tree.column("Telefone", width=120, anchor="center")
+    tree.column("E-mail", width=180, anchor="center")
     tree.pack(expand=True, fill="both", padx=10, pady=10)
 
     scroll = ttk.Scrollbar(frame_tree, orient="vertical", command=tree.yview)

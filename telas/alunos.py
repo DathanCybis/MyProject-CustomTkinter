@@ -119,13 +119,13 @@ def criar_tela_alunos(frame):
 
 
     # ---------------- Campos de entrada ----------------
-    entry_nome_alunos = ctk.CTkEntry(frame, placeholder_text='*Nome completo...', width=250)
+    entry_nome_alunos = ctk.CTkEntry(frame, placeholder_text='* Nome completo...', width=250)
     entry_nome_alunos.pack()
 
-    entry_datnasc_alunos = ctk.CTkEntry(frame, placeholder_text='*Data de Nascimento (DD/MM/AAAA)...', width=250)
+    entry_datnasc_alunos = ctk.CTkEntry(frame, placeholder_text='* Data de Nascimento (DD/MM/AAAA)...', width=250)
     entry_datnasc_alunos.pack(pady=15)
 
-    entry_turma_alunos = ctk.CTkEntry(frame, placeholder_text='*Turma...', width=250)
+    entry_turma_alunos = ctk.CTkEntry(frame, placeholder_text='* Turma...', width=250)
     entry_turma_alunos.pack(pady=(0, 15))
 
     # -------------- Botões --------------
@@ -138,7 +138,7 @@ def criar_tela_alunos(frame):
     ctk.CTkButton(frame, text='EXCLUIR ALUNOS', fg_color='black', text_color='purple', width=250,
                   font=('arial bold', 14), hover_color='grey', command=excluir_dados).pack(pady=(0, 5))
 
-    ctk.CTkButton(frame, text='LIMPAR ALUNOS', fg_color='black', text_color='purple', width=250,
+    ctk.CTkButton(frame, text='LIMPAR CAMPOS', fg_color='black', text_color='purple', width=250,
                   font=('arial bold', 14), hover_color='grey', command=limpar_dados).pack()
 
 
@@ -161,7 +161,7 @@ def criar_tela_alunos(frame):
     tree.heading("Idade", text="Idade")
     tree.heading("Turma", text="Turma")
     tree.column("ID", width=10, anchor="center")
-    tree.column("Nome", width=200)
+    tree.column("Nome", width=200, anchor="center")
     tree.column("Idade", width=10 , anchor="center")
     tree.column("Turma", anchor="center")
     tree.pack(expand=True, fill="both", padx=10, pady=10)

@@ -116,13 +116,13 @@ def criar_tela_turmas(frame):
 
 
     # ---------------- Campos de entrada ----------------
-    entry_turma_turmas = ctk.CTkEntry(frame, placeholder_text='Turma...', width=250)
+    entry_turma_turmas = ctk.CTkEntry(frame, placeholder_text='* Turma...', width=250)
     entry_turma_turmas.pack()
 
-    entry_professor_turmas = ctk.CTkEntry(frame, placeholder_text='Professor...', width=250)
+    entry_professor_turmas = ctk.CTkEntry(frame, placeholder_text='* Professor...', width=250)
     entry_professor_turmas.pack(pady=15)
 
-    entry_turno_turmas = ctk.CTkEntry(frame, placeholder_text='Turno...', width=250)
+    entry_turno_turmas = ctk.CTkEntry(frame, placeholder_text='* Turno...', width=250)
     entry_turno_turmas.pack(pady=(0, 15))
 
     entry_capacidade_turmas = ctk.CTkEntry(frame, placeholder_text='Capacidade...', width=250)
@@ -141,7 +141,7 @@ def criar_tela_turmas(frame):
     ctk.CTkButton(frame, text='EXCLUIR TURMA', fg_color='black', text_color='purple', width=250,
                   font=('arial bold', 14), hover_color='grey', command=excluir_dados_turmas).pack(pady=(0, 5))
 
-    ctk.CTkButton(frame, text='LIMPAR DADOS', fg_color='black', text_color='purple', width=250,
+    ctk.CTkButton(frame, text='LIMPAR CAMPOS', fg_color='black', text_color='purple', width=250,
                   font=('arial bold', 14), hover_color='grey', command=limpar_dados_turmas).pack()
 
 

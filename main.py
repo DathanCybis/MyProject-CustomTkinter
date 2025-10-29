@@ -2,11 +2,12 @@ import customtkinter as ctk
 from tkinter import ttk, messagebox
 from banco import *
 from funcao import *
-from telas import turmas, alunos, professores
+from telas import turmas, alunos, professores, aulas
 
 conectar_banco_alunos()
 conectar_banco_turmas()
 conectar_banco_professores()
+conectar_banco_aulas()
 
 janela = ctk.CTk()
 
@@ -39,8 +40,7 @@ turmas.criar_tela_turmas(tabview.tab('Turmas'))
 
 # -------------- Aulas --------------
 tabview.add('Aulas')
-aul = ctk.CTkLabel(tabview.tab('Aulas'), text=('aulas teste'), font=("arial bold", 16))
-aul.pack()
+aulas.criar_tela_aulas(tabview.tab('Aulas'))
 
 
 janela.mainloop()

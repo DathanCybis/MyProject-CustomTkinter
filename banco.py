@@ -181,3 +181,51 @@ def excluir_professor(id_):
     conn.commit()
     conn.close()
 
+
+
+
+# -------------- -------------- -------------- AULAS -------------- -------------- --------------
+def conectar_banco_aulas():
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS aulas (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            disciplina TEXT NOT NULL,
+            professor TEXT NOT NULL,
+            turma TEXT NOT NULL,
+            horario TEXT NOT NULL,
+            sala TEXT
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+def cadastrar_aula(disciplina, professor, turma, horario, sala):
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    cur.execute("INSERT INTO aulas (disciplina, professor, turma, horario, sala) VALUES (?, ?, ?, ?, ?)", (disciplina, professor, turma, horario, sala))
+    conn.commit()
+    conn.close()
+
+def listar_aulas():
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    cur.execute("SELECT id, disciplina, professor, turma, horario, sala FROM aulas ORDER BY id")
+    dados = cur.fetchall()
+    conn.close()
+    return dados
+
+def atualizar_aula(id_, disciplina, professor, turma, horario, sala):
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    cur.execute("UPDATE aulas SET disciplina=?, professor=?, turma=?, horario=?, sala=? WHERE id=?", (disciplina, professor, turma, horario, sala, id_))
+    conn.commit()
+    conn.close()
+
+def excluir_aula(id_):
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    cur.execute("DELETE FROM aulas WHERE id=?", (id_,))
+    conn.commit()
+    conn.close()

@@ -4,7 +4,7 @@ from banco import *
 
 # -------------- Turmas --------------
 def criar_tela_turmas(frame):
-    # -------------- Funções da interface --------------
+    # -------------- Funções internas --------------
     def carregar_dados_turmas():
         ### Atualiza a tela com os dados do banco ###
         for item in tree.get_children():
@@ -166,19 +166,18 @@ def criar_tela_turmas(frame):
     tree.heading("Capacidade", text="Capacidade")
     tree.heading("Sala", text="Sala")
     tree.column("ID", width=10, anchor="center")
-    tree.column("Turma", width=50)
+    tree.column("Turma", width=50, anchor="center")
     tree.column("Professor", width=200, anchor="center")
-    tree.column("Turno", anchor="center")
-    tree.column("Capacidade", width=15)
-    tree.column("Sala", width=100 , anchor="center")
-    tree.pack(expand=True, fill="both", padx=10, pady=10)
-
+    tree.column("Turno", width=30, anchor="center")
+    tree.column("Capacidade", width=15, anchor="center")
+    tree.column("Sala", width=100, anchor="center")
 
     # -------------- Barra de rolagem de turmas --------------
     scroll = ttk.Scrollbar(frame_tree, orient="vertical", command=tree.yview)
     tree.configure(yscrollcommand=scroll.set)
     scroll.pack(side="right", fill="y")
-
+    tree.pack(expand=True, fill="both", padx=10, pady=10)
+    
     tree.bind("<<TreeviewSelect>>", ao_selecionar_turmas)
 
     # -------------- Inicialização --------------

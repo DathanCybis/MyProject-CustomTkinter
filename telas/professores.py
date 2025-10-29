@@ -169,11 +169,11 @@ def criar_tela_professores(frame):
     tree.column("Especialidade", width=150, anchor="center")
     tree.column("Telefone", width=120, anchor="center")
     tree.column("E-mail", width=180, anchor="center")
-    tree.pack(expand=True, fill="both", padx=10, pady=10)
 
     scroll = ttk.Scrollbar(frame_tree, orient="vertical", command=tree.yview)
     tree.configure(yscrollcommand=scroll.set)
     scroll.pack(side="right", fill="y")
+    tree.pack(expand=True, fill="both", padx=10, pady=10)
 
     tree.bind("<<TreeviewSelect>>", ao_selecionar_professor)
 

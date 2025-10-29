@@ -5,7 +5,7 @@ from funcao import calcular_idade, verificar_idade
 
 # -------------- Alunos --------------
 def criar_tela_alunos(frame):
-    # -------------- Funções da interface --------------
+    # -------------- Funções internas --------------
     def carregar_dados_alunos():
         ### Atualiza a tela com os dados do banco ###
         for item in tree.get_children():
@@ -164,13 +164,12 @@ def criar_tela_alunos(frame):
     tree.column("Nome", width=200, anchor="center")
     tree.column("Idade", width=10 , anchor="center")
     tree.column("Turma", anchor="center")
-    tree.pack(expand=True, fill="both", padx=10, pady=10)
-
 
     # -------------- Barra de rolagem --------------
     scroll = ttk.Scrollbar(frame_tree, orient="vertical", command=tree.yview)
     tree.configure(yscrollcommand=scroll.set)
     scroll.pack(side="right", fill="y")
+    tree.pack(expand=True, fill="both", padx=10, pady=10)
 
     tree.bind("<<TreeviewSelect>>", ao_selecionar)
 

@@ -117,14 +117,14 @@ def atualizar_turmas(id_, turma, professor, turno, capacidade, sala):
 def excluir_turmas(id_):
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
-    cur.execute("DELETE FROM turmas WHERE id=?", (id_))
+    cur.execute("DELETE FROM turmas WHERE id=?", (id_,))
     conn.commit()
 
 
 def buscar_turmas(id_):
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
-    cur.execute("SELECT turma, professor, turno, capacidade, sala FROM turmas WHERE id=?", (id_))
+    cur.execute("SELECT turma, professor, turno, capacidade, sala FROM turmas WHERE id=?", (id_,))
     turma = cur.fetchone()
     conn.close()
     return turma

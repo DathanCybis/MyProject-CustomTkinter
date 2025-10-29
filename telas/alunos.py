@@ -23,7 +23,7 @@ def criar_tela_alunos(frame):
     def inserir_dados():
         nome = entry_nome_alunos.get().strip()
         datanasc = entry_datnasc_alunos.get().strip()
-        turma = entry_turma_alunos.get().strip()
+        turma = menu_turma.get()
 
         try:
             verificar_idade(datanasc)
@@ -50,7 +50,7 @@ def criar_tela_alunos(frame):
         id_ = tree.item(selecionado[0], "values")[0]
         nome = entry_nome_alunos.get().strip()
         datanasc = entry_datnasc_alunos.get().strip()
-        turma = entry_turma_alunos.get().strip()
+        turma = menu_turma.get()
 
         try:
             verificar_idade(datanasc)
@@ -98,7 +98,7 @@ def criar_tela_alunos(frame):
     def limpar_dados():
         entry_nome_alunos.delete(0, "end")
         entry_datnasc_alunos.delete(0, "end")
-        entry_turma_alunos.delete(0, "end")
+        menu_turma.set("Selecione uma turma")
         tree.selection_remove(tree.selection())
 
 
@@ -111,22 +111,25 @@ def criar_tela_alunos(frame):
             aluno = buscar_alunos(id_)
             entry_nome_alunos.delete(0, "end")
             entry_datnasc_alunos.delete(0, "end")
-            entry_turma_alunos.delete(0, "end")
             if aluno:
                 entry_nome_alunos.insert(0, aluno[0])
                 entry_datnasc_alunos.insert(0, aluno[1])
-                entry_turma_alunos.insert(0, aluno[2])
+                menu_turma.set(aluno[2])
 
 
-    # ---------------- Campos de entrada ----------------
+    # Entradas de texto
     entry_nome_alunos = ctk.CTkEntry(frame, placeholder_text='* Nome completo...', width=250)
     entry_nome_alunos.pack()
 
     entry_datnasc_alunos = ctk.CTkEntry(frame, placeholder_text='* Data de Nascimento (DD/MM/AAAA)...', width=250)
     entry_datnasc_alunos.pack(pady=15)
 
-    entry_turma_alunos = ctk.CTkEntry(frame, placeholder_text='* Turma...', width=250)
-    entry_turma_alunos.pack(pady=(0, 15))
+    # Menus suspensos
+    turmas = buscar_nome_turmas()
+    menu_turma = ctk.CTkOptionMenu(frame, values=turmas, button_color='black', fg_color='grey20', button_hover_color='grey40', text_color='#C6C6C6', width=250)
+    menu_turma.pack(pady=(0, 15))
+    menu_turma.set("Selecione uma turma")
+
 
     # -------------- Botões --------------
     ctk.CTkButton(frame, text='CADASTRAR ALUNOS', fg_color='black', text_color='purple', width=250, 

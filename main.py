@@ -42,5 +42,4 @@ turmas.criar_tela_turmas(tabview.tab('Turmas'))
 tabview.add('Aulas')
 aulas.criar_tela_aulas(tabview.tab('Aulas'))
 
-
 janela.mainloop()

@@ -23,10 +23,12 @@ def criar_tela_aulas(frame):
             messagebox.showwarning("Aviso", "Preencha todos os campos obrigatórios!")
             return
 
+
         cadastrar_aula(disciplina, professor, turma, horario, sala)
         carregar_dados_aulas()
         limpar_campos()
         messagebox.showinfo("Sucesso", "Aula cadastrada com sucesso!")
+
 
     def editar_aula():
         selecionado = tree.selection()
@@ -46,6 +48,7 @@ def criar_tela_aulas(frame):
         limpar_campos()
         messagebox.showinfo("Sucesso", "Aula atualizada!")
 
+
     def excluir_aula_tree():
         selecionado = tree.selection()
         if not selecionado:
@@ -59,21 +62,21 @@ def criar_tela_aulas(frame):
             limpar_campos()
             messagebox.showinfo("Removido", f"Aula de {disciplina} excluída!")
 
+
     def limpar_campos():
         entry_disciplina.delete(0, "end")
-        menu_professor.set(buscar_nome_professores[0])
-        menu_turma.set(buscar_nome_turmas[0])
+        menu_professor.set("Selecione um professor")
+        menu_turma.set("Selecione uma turma")
         entry_horario.delete(0, "end")
         entry_sala.delete(0, "end")
         tree.selection_remove(tree.selection())
+
 
     def ao_selecionar(event):
         selecionado = tree.selection()
         if selecionado:
             valores = tree.item(selecionado[0], "values")
             entry_disciplina.delete(0, "end")
-            menu_professor.set(buscar_nome_professores[0])
-            menu_turma.set(buscar_nome_turmas[0])
             entry_horario.delete(0, "end")
             entry_sala.delete(0, "end")
 
@@ -83,27 +86,28 @@ def criar_tela_aulas(frame):
             entry_horario.insert(0, valores[4])
             entry_sala.insert(0, valores[5])
 
-    # ---------------- Widgets ----------------
+
+    # Entradas de texto
     entry_disciplina = ctk.CTkEntry(frame, placeholder_text="* Disciplina...", width=250)
     entry_disciplina.pack()
 
-    # Menu suspenso de professores
-    professores = buscar_nome_professores()
-    menu_professor = ctk.CTkOptionMenu(frame, values=professores, button_color='grey', fg_color='grey', button_hover_color='black', width=250)
-    menu_professor.pack(pady=15)
-    menu_professor.set(professores[0])
-
-    # Menu suspenso de turmas
-    turmas = buscar_nome_turmas()
-    menu_turma = ctk.CTkOptionMenu(frame, values=turmas, button_color='grey', fg_color='grey', button_hover_color='black',  width=250)
-    menu_turma.pack(pady=(0, 15))
-    menu_turma.set(turmas[0])
-
     entry_horario = ctk.CTkEntry(frame, placeholder_text="* Horário...", width=250)
-    entry_horario.pack(pady=(0, 15))
+    entry_horario.pack(pady=15)
 
     entry_sala = ctk.CTkEntry(frame, placeholder_text="Sala...", width=250)
-    entry_sala.pack(pady=(0, 15))
+    entry_sala.pack(pady=(0, 15))    
+
+    # Menus suspensos
+    professores = buscar_nome_professores()
+    menu_professor = ctk.CTkOptionMenu(frame, values=professores, button_color='black', fg_color='grey20', button_hover_color='grey40', text_color='#C6C6C6', width=250)
+    menu_professor.pack(pady=(0, 15))
+    menu_professor.set("Selecione um professor")
+
+    turmas = buscar_nome_turmas()
+    menu_turma = ctk.CTkOptionMenu(frame, values=turmas, button_color='black', fg_color='grey20', button_hover_color='grey40', text_color='#C6C6C6', width=250)
+    menu_turma.pack(pady=(0, 15))
+    menu_turma.set("Selecione uma turma")
+
 
     ctk.CTkButton(frame, text="CADASTRAR AULA", fg_color="black", text_color="purple", width=250,
                 font=("arial bold", 14), hover_color="grey", command=inserir_aula).pack(pady=(0, 5))

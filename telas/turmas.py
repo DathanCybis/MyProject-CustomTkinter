@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from tkinter import ttk, messagebox
 from banco import *
+from time import sleep
 
 # -------------- Turmas --------------
 def criar_tela_turmas(frame):
@@ -19,13 +20,18 @@ def criar_tela_turmas(frame):
 
             tree.insert("", "end", values=(id_, turma, professor, turno, capacidade, sala))
 
+    
+    def atualizar_menu_professores():
+        professores = buscar_nome_professores()
+        menu_professor.configure(values=professores)
+
 
     def inserir_dados_turmas():
-        turma = entry_turma_turmas.get().strip()
-        professor = entry_professor_turmas.get().strip()
-        turno = entry_turno_turmas.get().strip()
-        capacidade = entry_capacidade_turmas.get().strip()
-        sala = entry_sala_turmas.get().strip()
+        turma = entry_turma.get().strip()
+        professor = menu_professor.get()
+        turno = entry_turno.get().strip()
+        capacidade = entry_capacidade.get().strip()
+        sala = entry_sala.get().strip()
 
         if not turma or not turno:
             messagebox.showwarning("Atenção", "Preencha corretamente os campos.")
@@ -44,11 +50,11 @@ def criar_tela_turmas(frame):
             return
 
         id_ = tree.item(selecionado[0], "values")[0]
-        turma = entry_turma_turmas.get().strip()
-        professor = entry_professor_turmas.get().strip()
-        turno = entry_turno_turmas.get().strip()
-        capacidade = entry_capacidade_turmas.get().strip()
-        sala = entry_sala_turmas.get().strip()
+        turma = entry_turma.get().strip()
+        professor = menu_professor.get()
+        turno = entry_turno.get().strip()
+        capacidade = entry_capacidade.get().strip()
+        sala = entry_sala.get().strip()
 
 
         if not turma or not turno:
@@ -87,49 +93,52 @@ def criar_tela_turmas(frame):
 
 
     def limpar_dados_turmas():
-        entry_turma_turmas.delete(0, "end")
-        entry_professor_turmas.delete(0, "end")
-        entry_turno_turmas.delete(0, "end")
-        entry_capacidade_turmas.delete(0, "end")
-        entry_sala_turmas.delete(0, "end")
+        entry_turma.delete(0, "end")
+        menu_professor.set("Selecione um professor")
+        entry_turno.delete(0, "end")
+        entry_capacidade.delete(0, "end")
+        entry_sala.delete(0, "end")
         tree.selection_remove(tree.selection())
+        atualizar_menu_professores()
 
 
     def ao_selecionar_turmas(event):
-        ### Preenche os campos ao clicar numa linha ###
         selecionado = tree.selection()
         if selecionado:
             valores = tree.item(selecionado[0], "values")
             id_ = valores[0]
             turma = buscar_turmas(id_)
-            entry_turma_turmas.delete(0, "end")
-            entry_professor_turmas.delete(0, "end")
-            entry_turno_turmas.delete(0, "end")
-            entry_capacidade_turmas.delete(0, "end")
-            entry_sala_turmas.delete(0, "end")
+            entry_turma.delete(0, "end")
+            entry_turno.delete(0, "end")
+            entry_capacidade.delete(0, "end")
+            entry_sala.delete(0, "end")
             if turma:
-                entry_turma_turmas.insert(0, turma[0])
-                entry_professor_turmas.insert(0, turma[1])
-                entry_turno_turmas.insert(0, turma[2])
-                entry_capacidade_turmas.insert(0, turma[3])
-                entry_sala_turmas.insert(0, turma[4])
+                entry_turma.insert(0, turma[0])
+                menu_professor.set(turma[1])
+                entry_turno.insert(0, turma[2])
+                entry_capacidade.insert(0, turma[3])
+                entry_sala.insert(0, turma[4])
 
 
-    # ---------------- Campos de entrada ----------------
-    entry_turma_turmas = ctk.CTkEntry(frame, placeholder_text='* Turma...', width=250)
-    entry_turma_turmas.pack()
+    # Entradas de texto
+    entry_turma = ctk.CTkEntry(frame, placeholder_text='* Turma...', width=250)
+    entry_turma.pack()
 
-    entry_professor_turmas = ctk.CTkEntry(frame, placeholder_text='* Professor...', width=250)
-    entry_professor_turmas.pack(pady=15)
+    entry_turno = ctk.CTkEntry(frame, placeholder_text='* Turno...', width=250)
+    entry_turno.pack(pady=15)
 
-    entry_turno_turmas = ctk.CTkEntry(frame, placeholder_text='* Turno...', width=250)
-    entry_turno_turmas.pack(pady=(0, 15))
+    entry_capacidade = ctk.CTkEntry(frame, placeholder_text='Capacidade...', width=250)
+    entry_capacidade.pack(pady=(0, 15))
 
-    entry_capacidade_turmas = ctk.CTkEntry(frame, placeholder_text='Capacidade...', width=250)
-    entry_capacidade_turmas.pack(pady=(0, 15))
+    entry_sala = ctk.CTkEntry(frame, placeholder_text='Sala...', width=250)
+    entry_sala.pack(pady=(0, 15))
 
-    entry_sala_turmas = ctk.CTkEntry(frame, placeholder_text='Sala...', width=250)
-    entry_sala_turmas.pack(pady=(0, 15))
+    # Menus suspensos
+    professores = buscar_nome_professores()
+    menu_professor = ctk.CTkOptionMenu(frame, values=professores, button_color='black', fg_color='grey20', button_hover_color='grey40', text_color='#C6C6C6', width=250)
+    menu_professor.pack(pady=(0, 15))
+    menu_professor.set("Selecione um professor")
+
 
     # -------------- Botões --------------
     ctk.CTkButton(frame, text='CADASTRAR TURMA', fg_color='black', text_color='purple', width=250, 

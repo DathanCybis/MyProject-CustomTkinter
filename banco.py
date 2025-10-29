@@ -94,7 +94,17 @@ def listar_turmas():
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
     cur.execute("SELECT id, turma, professor, turno, capacidade, sala FROM turmas ORDER BY id")
-    return cur.fetchall()
+    dados = cur.fetchall()
+    return dados
+
+
+def buscar_nome_turmas():
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    cur.execute("SELECT turma FROM turmas ORDER BY turma")
+    turms = [t[0] for t in cur.fetchall()]
+    conn.close()
+    return turms if turms else ["Nenhuma cadastrada"]
 
 
 def atualizar_turmas(id_, turma, professor, turno, capacidade, sala):
@@ -155,6 +165,15 @@ def listar_professores():
     dados = cur.fetchall()
     conn.close()
     return dados
+
+
+def buscar_nome_professores():
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    cur.execute("SELECT nome FROM professores ORDER BY nome")
+    profs = [p[0] for p in cur.fetchall()]
+    conn.close()
+    return profs if profs else ["Nenhum cadastrado"]
 
 
 def buscar_professor(id_):

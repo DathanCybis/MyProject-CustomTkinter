@@ -9,20 +9,13 @@ def criar_tela_aulas(frame):
         for item in tree.get_children():
             tree.delete(item)
         for aula in listar_aulas():
-            id_ = aula[0]
-            disciplina = aula[1]
-            professor = aula[2]
-            turma = aula[3]
-            horario = aula[4]
-            sala = aula[5]
-
-            tree.insert("", "end", values=(id_, disciplina, professor, turma, horario, sala))
+            tree.insert("", "end", values=aula)
 
 
     def inserir_aula():
         disciplina = entry_disciplina.get().strip()
-        professor = entry_professor.get().strip()
-        turma = entry_turma.get().strip()
+        professor = menu_professor.get()
+        turma = menu_turma.get()
         horario = entry_horario.get().strip()
         sala = entry_sala.get().strip()
 
@@ -43,8 +36,8 @@ def criar_tela_aulas(frame):
 
         id_ = tree.item(selecionado[0], "values")[0]
         disciplina = entry_disciplina.get().strip()
-        professor = entry_professor.get().strip()
-        turma = entry_turma.get().strip()
+        professor = menu_professor.get()
+        turma = menu_turma.get()
         horario = entry_horario.get().strip()
         sala = entry_sala.get().strip()
 
@@ -68,8 +61,8 @@ def criar_tela_aulas(frame):
 
     def limpar_campos():
         entry_disciplina.delete(0, "end")
-        entry_professor.delete(0, "end")
-        entry_turma.delete(0, "end")
+        menu_professor.set(buscar_nome_professores[0])
+        menu_turma.set(buscar_nome_turmas[0])
         entry_horario.delete(0, "end")
         entry_sala.delete(0, "end")
         tree.selection_remove(tree.selection())
@@ -79,13 +72,14 @@ def criar_tela_aulas(frame):
         if selecionado:
             valores = tree.item(selecionado[0], "values")
             entry_disciplina.delete(0, "end")
-            entry_professor.delete(0, "end")
-            entry_turma.delete(0, "end")
+            menu_professor.set(buscar_nome_professores[0])
+            menu_turma.set(buscar_nome_turmas[0])
             entry_horario.delete(0, "end")
             entry_sala.delete(0, "end")
+
             entry_disciplina.insert(0, valores[1])
-            entry_professor.insert(0, valores[2])
-            entry_turma.insert(0, valores[3])
+            menu_professor.set(valores[2])
+            menu_turma.set(valores[3])
             entry_horario.insert(0, valores[4])
             entry_sala.insert(0, valores[5])
 
@@ -93,11 +87,17 @@ def criar_tela_aulas(frame):
     entry_disciplina = ctk.CTkEntry(frame, placeholder_text="* Disciplina...", width=250)
     entry_disciplina.pack()
 
-    entry_professor = ctk.CTkEntry(frame, placeholder_text="* Professor...", width=250)
-    entry_professor.pack(pady=15)
+    # Menu suspenso de professores
+    professores = buscar_nome_professores()
+    menu_professor = ctk.CTkOptionMenu(frame, values=professores, button_color='grey', fg_color='grey', button_hover_color='black', width=250)
+    menu_professor.pack(pady=15)
+    menu_professor.set(professores[0])
 
-    entry_turma = ctk.CTkEntry(frame, placeholder_text="* Turma...", width=250)
-    entry_turma.pack(pady=(0, 15))
+    # Menu suspenso de turmas
+    turmas = buscar_nome_turmas()
+    menu_turma = ctk.CTkOptionMenu(frame, values=turmas, button_color='grey', fg_color='grey', button_hover_color='black',  width=250)
+    menu_turma.pack(pady=(0, 15))
+    menu_turma.set(turmas[0])
 
     entry_horario = ctk.CTkEntry(frame, placeholder_text="* Horário...", width=250)
     entry_horario.pack(pady=(0, 15))

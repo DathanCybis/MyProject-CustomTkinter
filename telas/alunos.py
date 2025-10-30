@@ -117,6 +117,13 @@ def criar_tela_alunos(frame):
                 menu_turma.set(aluno[2])
 
 
+    def atualizar_menu_turma(event=None):
+        turma = buscar_nome_turmas()
+        menu_turma.configure(values=turma)
+        if turma:
+            menu_turma.set("Selecione uma turma")
+
+
     # Entradas de texto
     entry_nome_alunos = ctk.CTkEntry(frame, placeholder_text='* Nome completo...', width=250)
     entry_nome_alunos.pack()
@@ -130,6 +137,8 @@ def criar_tela_alunos(frame):
     menu_turma.pack(pady=(0, 15))
     menu_turma.set("Selecione uma turma")
 
+    # Atualiza o menu quando a aba é aberta
+    frame.bind("<Visibility>", atualizar_menu_turma)
 
     # -------------- Botões --------------
     ctk.CTkButton(frame, text='CADASTRAR ALUNOS', fg_color='black', text_color='purple', width=250, 

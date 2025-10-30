@@ -85,6 +85,20 @@ def criar_tela_aulas(frame):
             menu_turma.set(valores[3])
             entry_horario.insert(0, valores[4])
             entry_sala.insert(0, valores[5])
+    
+
+    def atualizar_menu_professores(event=None):
+        professores = buscar_nome_professores()
+        menu_professor.configure(values=professores)
+        if professores:
+            menu_professor.set("Selecione um professor")
+    
+
+    def atualizar_menu_turma(event=None):
+        turma = buscar_nome_turmas()
+        menu_turma.configure(values=turma)
+        if turma:
+            menu_turma.set("Selecione uma turma")
 
 
     # Entradas de texto
@@ -107,6 +121,10 @@ def criar_tela_aulas(frame):
     menu_turma = ctk.CTkOptionMenu(frame, values=turmas, button_color='black', fg_color='grey20', button_hover_color='grey40', text_color='#C6C6C6', width=250)
     menu_turma.pack(pady=(0, 15))
     menu_turma.set("Selecione uma turma")
+
+    # Atualiza os menus quando a aba é aberta
+    frame.bind("<Visibility>", atualizar_menu_professores)
+    frame.bind("<Visibility>", atualizar_menu_turma)
 
 
     ctk.CTkButton(frame, text="CADASTRAR AULA", fg_color="black", text_color="purple", width=250,

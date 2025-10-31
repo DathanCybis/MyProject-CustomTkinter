@@ -16,7 +16,8 @@ janela.title("Treino CTK")
 janela.geometry('1100x800')
 
 # -------------- Texto de cima --------------
-ctk.CTkLabel(janela, text='  Treino CTK  ', font=("arial bold", 20), fg_color='black', text_color='purple').pack(pady=20)
+ctk.CTkLabel(janela, text='  SIAE  ', font=("arial bold", 20), fg_color='black', text_color='purple').pack(pady=20)
+ctk.CTkLabel(janela, text='  Sistema Integrado de Administração escolar  ', font=("arial bold", 14), fg_color='black', text_color='purple').pack()
 
 # -------------- Tabela de seleção --------------
 tabview = ctk.CTkTabview(janela, width=1000, height=700, corner_radius=20, segmented_button_selected_color='purple', 
